@@ -1,5 +1,5 @@
 /* SQL Cards service worker: offline cache + background reminders */
-const VERSION = "sqlcards-v1.0.1";
+const VERSION = "sqlcards-v1.0.2";
 const ASSETS = [
   "./", "./index.html", "./manifest.webmanifest",
   "./vendor/xlsx.full.min.js", "./fonts/Vazirmatn.woff2",
