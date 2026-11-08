@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
@@ -83,7 +82,8 @@ header.top{display:flex;align-items:center;gap:8px}
 .chip.mine[aria-pressed="true"]{background:var(--mine);color:#fff;border-color:var(--mine)}
 
 .stage{flex:1;min-height:0;position:relative;margin-top:14px;perspective:1600px}
-.card{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.8,.2,1);touch-action:pan-y}
+.card{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.8,.2,1);touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.card *{touch-action:pan-y}
 .card.flipped{transform:rotateY(180deg)}
 .card.swipe{transition:transform .22s ease,opacity .22s ease}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:24px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
@@ -207,7 +207,7 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
 <!-- ========== Study ========== -->
 <section class="view active" id="v-study">
   <header class="top">
-    <div class="brand"><h1>فلش‌کارت  SQL</h1><small>Senior · Performance Tuning · DBA</small></div>
+    <div class="brand"><h1>فلش‌کارت مصاحبه SQL</h1><small>Senior · Performance Tuning · DBA</small></div>
     <button class="icon-btn" id="shuffleBtn" aria-pressed="false" aria-label="ترتیب تصادفی">
       <svg class="i" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
     <button class="icon-btn primary" id="quickAdd" aria-label="کارت جدید">
@@ -322,7 +322,7 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
 <script src="vendor/xlsx.full.min.js" defer></script>
 <script>
 "use strict";
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.0.1";
 const CATS0 = {
   idx:"ایندکس و ذخیره‌سازی", stat:"Statistics", plan:"Execution Plan", tsql:"T-SQL",
   conc:"تراکنش و قفل", wait:"tempdb و Wait", admin:"ادمین", ha:"HA / DR",
@@ -520,7 +520,11 @@ function refreshStudy(){ buildDeck(); renderChips(); renderCard(); }
     if (horiz && Math.abs(dx) > 70 && S.set.pos + (dx<0?1:-1) >= 0 && S.set.pos + (dx<0?1:-1) < deck.length) go(dx < 0 ? 1 : -1);
     else { card.style.transform=""; if (horiz===null) setFlip(!flipped); }
   });
-  card.addEventListener("pointercancel", () => { active=false; card.style.transition=""; card.style.transform=""; });
+  card.addEventListener("pointercancel", () => {
+    if (!active) return; active=false; card.style.transition="";
+    if (horiz && Math.abs(dx) > 70 && S.set.pos + (dx<0?1:-1) >= 0 && S.set.pos + (dx<0?1:-1) < deck.length) go(dx < 0 ? 1 : -1);
+    else card.style.transform="";
+  });
 })();
 
 /* ---------- views ---------- */
