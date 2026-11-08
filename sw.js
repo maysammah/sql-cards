@@ -1,5 +1,5 @@
 /* SQL Cards service worker: offline cache + background reminders */
-const VERSION = "sqlcards-v1.0.0";
+const VERSION = "sqlcards-v1.0.1";
 const ASSETS = [
   "./", "./index.html", "./manifest.webmanifest",
   "./vendor/xlsx.full.min.js", "./fonts/Vazirmatn.woff2",
@@ -112,4 +112,3 @@ self.addEventListener("notificationclick", e => {
     })
   );
 });
-
