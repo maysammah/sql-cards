@@ -40,18 +40,18 @@
   --code-bg:#262b34; --shadow:0 20px 50px -20px rgba(0,0,0,.8); color-scheme:dark;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--ink)}
-body{font-family:var(--font);overscroll-behavior:none;-webkit-font-smoothing:antialiased}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);overscroll-behavior:none}
+body{position:fixed;inset:0;width:100%;font-family:var(--font);-webkit-font-smoothing:antialiased}
 button,input,textarea,select{font:inherit;color:inherit}
 button{border:0;background:none;cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 [hidden]{display:none!important}
 
-.app{height:100dvh;display:flex;flex-direction:column;max-width:560px;margin:0 auto}
+.app{height:100%;display:flex;flex-direction:column;max-width:560px;margin:0 auto}
 .view{flex:1;min-height:0;display:none;flex-direction:column;
   padding:calc(env(safe-area-inset-top,0px) + 10px) max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px))}
 .view.active{display:flex}
-.view.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch}
+.view.scroll{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .tabbar{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom,0px)}
 .tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 7px;font-size:12px;font-weight:500;color:var(--muted)}
 .tab svg{width:22px;height:22px}
@@ -83,7 +83,8 @@ header.top{display:flex;align-items:center;gap:8px}
 
 .stage{flex:1;min-height:0;position:relative;margin-top:14px;perspective:1600px}
 .card{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.8,.2,1);touch-action:pan-y;user-select:none;-webkit-user-select:none}
-.card *{touch-action:pan-y}
+.front,.front *{touch-action:none}
+.back,.back *{touch-action:pan-y}
 .card.flipped{transform:rotateY(180deg)}
 .card.swipe{transition:transform .22s ease,opacity .22s ease}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:24px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
@@ -93,10 +94,10 @@ header.top{display:flex;align-items:center;gap:8px}
 .tag{padding:4px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:12px}
 .tag.mine{background:var(--mine-soft);color:var(--mine)}
 .status-pill{font-weight:700} .status-pill.k{color:var(--good)} .status-pill.a{color:var(--again)}
-.front .q{flex:1;display:flex;align-items:center;padding:20px 24px;font-size:clamp(21px,6vw,27px);font-weight:800;line-height:1.55;text-wrap:balance;overflow-y:auto}
+.front .q{flex:1;display:flex;align-items:center;padding:20px 24px;font-size:clamp(21px,6vw,27px);font-weight:800;line-height:1.55;text-wrap:balance;overflow:hidden}
 .hint{display:flex;align-items:center;justify-content:center;gap:6px;padding:0 12px 20px;font-size:13px;color:var(--muted);text-align:center}
 .hint svg{width:16px;height:16px;flex:0 0 auto}
-.back-body{flex:1;overflow-y:auto;padding:14px 20px 22px;-webkit-overflow-scrolling:touch}
+.back-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:14px 20px 22px;-webkit-overflow-scrolling:touch}
 .rich .back-q{font-size:14px;color:var(--muted);font-weight:500;line-height:1.7;margin:0 0 12px}
 .rich .hook{background:var(--accent-soft);border-radius:14px;padding:12px 14px;font-weight:700;font-size:16px;line-height:1.75}
 .rich .points{margin:14px 0 0;padding:0 22px 0 0;line-height:1.85;font-size:15px}
@@ -164,8 +165,8 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
 /* sheets */
 .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
 .sheet-bg.open{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;max-height:92dvh;display:flex;flex-direction:column;background:var(--surface);border-radius:24px 24px 0 0;border:1px solid var(--line);transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);z-index:21}
-.sheet.open{transform:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;max-height:92dvh;display:flex;flex-direction:column;background:var(--surface);border-radius:24px 24px 0 0;border:1px solid var(--line);transform:translateY(105%);visibility:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s .28s;z-index:21}
+.sheet.open{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
 .sheet-head{display:flex;align-items:center;gap:10px;padding:12px 18px 10px;border-bottom:1px solid var(--line)}
 .sheet-head h2{margin:0;font-size:17px;flex:1}
 .sheet-body{overflow-y:auto;padding:14px 18px;-webkit-overflow-scrolling:touch}
@@ -322,7 +323,7 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
 <script src="vendor/xlsx.full.min.js" defer></script>
 <script>
 "use strict";
-const APP_VERSION = "1.0.1";
+const APP_VERSION = "1.0.2";
 const CATS0 = {
   idx:"ایندکس و ذخیره‌سازی", stat:"Statistics", plan:"Execution Plan", tsql:"T-SQL",
   conc:"تراکنش و قفل", wait:"tempdb و Wait", admin:"ادمین", ha:"HA / DR",
@@ -507,24 +508,33 @@ function mark(v){
 function refreshStudy(){ buildDeck(); renderChips(); renderCard(); }
 
 (() => {
-  const card = $("card"); let sx=0, sy=0, dx=0, dy=0, active=false, horiz=null;
-  card.addEventListener("pointerdown", e => { active=true; horiz=null; sx=e.clientX; sy=e.clientY; dx=dy=0; });
-  card.addEventListener("pointermove", e => {
-    if (!active) return; dx = e.clientX-sx; dy = e.clientY-sy;
-    if (horiz===null && (Math.abs(dx)>8 || Math.abs(dy)>8)) horiz = Math.abs(dx) > Math.abs(dy);
-    if (horiz){ card.style.transition="none"; card.style.transform = `translateX(${dx}px) rotate(${dx/40}deg) ${flipped?"rotateY(180deg)":""}`; }
-  });
-  card.addEventListener("pointerup", () => {
-    if (!active) return; active=false;
-    card.style.transition="";
-    if (horiz && Math.abs(dx) > 70 && S.set.pos + (dx<0?1:-1) >= 0 && S.set.pos + (dx<0?1:-1) < deck.length) go(dx < 0 ? 1 : -1);
-    else { card.style.transform=""; if (horiz===null) setFlip(!flipped); }
-  });
-  card.addEventListener("pointercancel", () => {
+  // touch events (not pointer events): the browser can cancel a pointer stream mid-swipe on real phones
+  const card = $("card");
+  let sx=0, sy=0, dx=0, dy=0, active=false, horiz=null;
+  const begin = (x, y) => { active=true; horiz=null; sx=x; sy=y; dx=dy=0; };
+  const move = (x, y, e) => {
+    if (!active) return;
+    dx = x-sx; dy = y-sy;
+    if (horiz===null && (Math.abs(dx)>8 || Math.abs(dy)>8)) horiz = Math.abs(dx) >= Math.abs(dy)*0.8;
+    if (horiz){
+      if (e && e.cancelable) e.preventDefault();
+      card.style.transition="none";
+      card.style.transform = `translateX(${dx}px) rotate(${dx/40}deg) ${flipped?"rotateY(180deg)":""}`;
+    }
+  };
+  const finish = () => {
     if (!active) return; active=false; card.style.transition="";
-    if (horiz && Math.abs(dx) > 70 && S.set.pos + (dx<0?1:-1) >= 0 && S.set.pos + (dx<0?1:-1) < deck.length) go(dx < 0 ? 1 : -1);
-    else card.style.transform="";
-  });
+    const target = S.set.pos + (dx<0 ? 1 : -1);
+    if (horiz && Math.abs(dx) > 60 && target >= 0 && target < deck.length) go(dx<0 ? 1 : -1);
+    else { card.style.transform=""; if (horiz===null) setFlip(!flipped); }
+  };
+  card.addEventListener("touchstart", e => { if (e.touches.length===1) begin(e.touches[0].clientX, e.touches[0].clientY); else active=false; }, {passive:true});
+  card.addEventListener("touchmove", e => { if (e.touches.length===1) move(e.touches[0].clientX, e.touches[0].clientY, e); }, {passive:false});
+  card.addEventListener("touchend", e => { if (active && e.cancelable) e.preventDefault(); finish(); }, {passive:false});
+  card.addEventListener("touchcancel", finish, {passive:true});
+  card.addEventListener("pointerdown", e => { if (e.pointerType==="mouse") begin(e.clientX, e.clientY); });
+  window.addEventListener("pointermove", e => { if (e.pointerType==="mouse") move(e.clientX, e.clientY, null); });
+  window.addEventListener("pointerup", e => { if (e.pointerType==="mouse") finish(); });
 })();
 
 /* ---------- views ---------- */
