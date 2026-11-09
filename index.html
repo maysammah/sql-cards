@@ -52,7 +52,7 @@ button{border:0;background:none;cursor:pointer}
   padding:calc(env(safe-area-inset-top,0px) + 10px) max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px))}
 .view.active{display:flex}
 .view.scroll{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-.tabbar{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabbar{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom,0px)}
 .tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 7px;font-size:12px;font-weight:500;color:var(--muted)}
 .tab svg{width:22px;height:22px}
 .tab[aria-selected="true"]{color:var(--accent)}
@@ -199,6 +199,77 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
 
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 140px);transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:99px;font-size:13px;opacity:0;transition:.25s;pointer-events:none;z-index:40;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* v1.1: spaced repetition + report */
+:root{ --r1:#b8402f; --r2:#a87d00; --r3:#2e8f68; --r4:#4a6fd0; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --r1:#d0506a; --r2:#b38d12; --r3:#2b9470; --r4:#6b74dc; } }
+:root[data-theme="dark"]{ --r1:#d0506a; --r2:#b38d12; --r3:#2b9470; --r4:#6b74dc; }
+.icon-btn:disabled{opacity:.35}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:12px;padding:4px;border-radius:14px;background:var(--surface2)}
+.mode{height:38px;border-radius:10px;font-weight:700;font-size:14px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
+.mode[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.mode .badge{min-width:22px;height:20px;padding:0 6px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:12px;display:inline-grid;place-items:center;font-variant-numeric:tabular-nums}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.toprow b{color:var(--ink)}
+.counts{display:flex;gap:12px}
+.cnt b{font-size:14px;margin-left:3px}
+.cnt.new b{color:var(--r4)} .cnt.learn b{color:var(--r1)} .cnt.rev b{color:var(--r3)}
+.tag.hard{background:var(--again-soft);color:var(--again)}
+.edit-card{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:var(--muted);background:var(--surface2)}
+.edit-card svg{width:16px;height:16px}
+.show-btn{height:54px;border-radius:16px;font-weight:800;font-size:16px;background:var(--ink);color:var(--bg)}
+.ctl-front{display:grid;grid-template-columns:52px 1fr 52px;gap:10px;margin-top:14px}
+.ctl-back{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.rate{height:60px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--surface);border:1px solid var(--line);position:relative;overflow:hidden;transition:transform .1s}
+.rate:active{transform:scale(.95)}
+.rate::before{content:"";position:absolute;inset:0;background:var(--rc);opacity:.13}
+.rate .iv{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;position:relative}
+.rate .lb{font-size:15px;font-weight:800;position:relative;display:flex;align-items:center;gap:5px}
+.rate .lb::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--rc)}
+.rate[data-r="1"]{--rc:var(--r1)} .rate[data-r="2"]{--rc:var(--r2)} .rate[data-r="3"]{--rc:var(--r3)} .rate[data-r="4"]{--rc:var(--r4)}
+.empty-actions{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;justify-content:center}
+.empty-actions .btn{padding:0 16px}
+.empty span{line-height:1.8}
+.st{font-size:11.5px}
+.st-new{color:var(--r4)} .st-learn{color:var(--r1)} .st-due{color:var(--r3);font-weight:700} .st-wait{color:var(--muted)}
+/* report */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.tile b{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.tile span{font-size:12px;color:var(--muted)}
+.card-sec{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}
+.card-sec h3{margin:0 0 2px;font-size:15px}
+.card-sec .sub{font-size:12px;color:var(--muted);margin:0 0 10px}
+.readout{font-size:13px;font-weight:700;min-height:20px;margin-bottom:6px;font-variant-numeric:tabular-nums}
+svg.chart{width:100%;height:auto;display:block;overflow:visible;touch-action:pan-y}
+svg.chart .bar{fill:var(--accent);opacity:.55}
+svg.chart .bar.hi{opacity:1}
+svg.chart .hit{fill:transparent}
+svg.chart .hit.on{fill:var(--ink);opacity:.06}
+svg.chart .axis{stroke:var(--line);stroke-width:1}
+svg.chart .grid{stroke:var(--line);stroke-width:1;stroke-dasharray:2 3}
+svg.chart .tick{fill:var(--muted);font-size:9px;font-family:var(--font)}
+.hrow{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;padding:8px 0;text-align:right;border-bottom:1px solid var(--line);font-size:13.5px}
+.hrow:last-child{border-bottom:0}
+.hb{height:8px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.hb i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.hv{font-weight:800;font-variant-numeric:tabular-nums;min-width:32px;text-align:left}
+.seg{display:flex;gap:2px;height:14px;border-radius:99px;overflow:hidden}
+.seg i{display:block;height:100%}
+.r1{background:var(--r1)} .r2{background:var(--r2)} .r3{background:var(--r3)} .r4{background:var(--r4)}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:10px;font-size:13px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend .sw{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
+.legend b{font-variant-numeric:tabular-nums} .legend em{font-style:normal;color:var(--muted);font-size:12px}
+.tbl{overflow-x:auto}
+.tbl table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.tbl th{font-size:12px;color:var(--muted);font-weight:500;text-align:right;padding:6px 4px;border-bottom:1px solid var(--line)}
+.tbl td{padding:8px 4px;border-bottom:1px solid var(--line)}
+.tbl tr:last-child td{border-bottom:0}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper button{width:32px;height:32px;border-radius:10px;background:var(--surface2);border:1px solid var(--line);font-weight:800;font-size:16px}
+.stepper b{min-width:28px;text-align:center;font-variant-numeric:tabular-nums}
+
 @media (prefers-reduced-motion: reduce){.card,.card.swipe,.sheet{transition:none}}
 </style>
 </head>
@@ -208,38 +279,46 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
 <!-- ========== Study ========== -->
 <section class="view active" id="v-study">
   <header class="top">
-    <div class="brand"><h1>فلش‌کارت SQL</h1><small>Senior · Performance Tuning · DBA</small></div>
+    <div class="brand"><h1>فلش‌کارت SQL</h1><small>مصاحبه‌ی Senior</small></div>
+    <button class="icon-btn" id="undoBtn" aria-label="برگرداندن آخرین امتیاز" disabled>
+      <svg class="i" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
     <button class="icon-btn" id="shuffleBtn" aria-pressed="false" aria-label="ترتیب تصادفی">
       <svg class="i" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
     <button class="icon-btn primary" id="quickAdd" aria-label="کارت جدید">
       <svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
   </header>
-  <div class="progress" aria-hidden="true"><i class="k" id="pk"></i><i class="a" id="pa"></i></div>
-  <div class="stats">
-    <span>کارت <b id="pos">۰</b> از <b id="tot">۰</b></span>
-    <span><i class="dot" style="background:var(--good)"></i>بلد <b id="nk">۰</b></span>
-    <span><i class="dot" style="background:var(--again)"></i>مرور <b id="na">۰</b></span>
+  <div class="modes" role="group" aria-label="حالت مطالعه">
+    <button class="mode" id="modeToday" aria-pressed="true">مرور امروز <span class="badge" id="todayBadge">۰</span></button>
+    <button class="mode" id="modeFree" aria-pressed="false">مطالعه‌ی آزاد</button>
   </div>
+  <div class="toprow"><div class="counts" id="countsLine"></div><span id="progLbl"></span></div>
+  <div class="progress" aria-hidden="true" style="margin-top:6px"><i class="k" id="pk"></i></div>
   <nav class="chips" id="chips" aria-label="دسته‌ها"></nav>
   <main class="stage">
     <div class="card" id="card" tabindex="0" aria-label="کارت؛ برای دیدن جواب لمس کنید">
       <section class="face front">
         <div class="face-top"><div class="tags" id="fTags"></div><span id="fNum"></span></div>
         <div class="q" id="fQ"></div>
-        <div class="hint"><svg class="i" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4"/></svg>برای دیدن جواب لمس کن · برای کارت بعدی بکش</div>
+        <div class="hint"><svg class="i" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4"/></svg>اول جواب رو توی ذهنت بگو، بعد کارت رو برگردون</div>
       </section>
       <section class="face back">
-        <div class="face-top"><div class="tags" id="bTags"></div><span class="status-pill" id="bStatus"></span></div>
+        <div class="face-top"><div class="tags" id="bTags"></div><span style="display:flex;align-items:center;gap:8px"><span class="status-pill" id="bStatus"></span>
+          <button class="edit-card" id="editCard" aria-label="ویرایش کارت" hidden><svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg></button></span></div>
         <div class="back-body rich" id="backBody"></div>
       </section>
     </div>
-    <div class="empty" id="empty"><b>کارتی اینجا نیست</b><span id="emptyMsg"></span></div>
+    <div class="empty" id="empty"></div>
   </main>
-  <div class="controls">
+  <div class="ctl-front" id="ctlFront">
     <button class="ctl" id="prevBtn" aria-label="کارت قبلی"><svg class="i" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-    <button class="ctl again" id="againBtn"><svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>دوباره</button>
-    <button class="ctl good" id="goodBtn"><svg class="i" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>بلد بودم</button>
+    <button class="show-btn" id="showBtn">نمایش جواب</button>
     <button class="ctl" id="nextBtn" aria-label="کارت بعدی"><svg class="i" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+  </div>
+  <div class="ctl-back" id="ctlBack" hidden>
+    <button class="rate" data-r="4"><span class="iv" id="iv4"></span><span class="lb">Easy</span></button>
+    <button class="rate" data-r="3"><span class="iv" id="iv3"></span><span class="lb">Good</span></button>
+    <button class="rate" data-r="2"><span class="iv" id="iv2"></span><span class="lb">Hard</span></button>
+    <button class="rate" data-r="1"><span class="iv" id="iv1"></span><span class="lb">Again</span></button>
   </div>
 </section>
 
@@ -255,6 +334,20 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
   <nav class="chips" id="libChips"></nav>
   <div class="list-head"><span id="libCount"></span><span>برای دیدن جزئیات لمس کن</span></div>
   <div class="list" id="libList"></div>
+</section>
+
+<section class="view scroll" id="v-rep">
+  <header class="top"><div class="brand"><h1>گزارش</h1><small>روند مطالعه و سختی کارت‌ها</small></div></header>
+  <div class="ok" id="repEmpty" style="margin-top:14px">هنوز مروری ثبت نشده. بعد از اینکه کارت‌ها رو با Easy، Good، Hard یا Again امتیاز بدی، روند مطالعه‌ت اینجا میاد.</div>
+  <div class="tiles" id="tiles"></div>
+  <div class="card-sec"><h3>وضعیت کارت‌ها</h3><p class="sub">برای دیدن کارت‌های هر وضعیت لمس کن</p><div id="states"></div></div>
+  <div class="card-sec"><h3>مرور روزانه</h3><p class="sub">۳۰ روز گذشته · برای جزئیات هر روز لمس کن</p><div id="chDaily"></div></div>
+  <div class="card-sec"><h3>سختی جواب‌ها</h3><p class="sub">امتیازهای ۳۰ روز گذشته</p><div id="ratings"></div></div>
+  <div class="card-sec"><h3>ساعت مطالعه</h3><p class="sub">همه‌ی مرورها بر اساس ساعت روز</p><div id="chHours"></div></div>
+  <div class="card-sec"><h3>مرورهای پیش رو</h3><p class="sub">کارت‌هایی که در ۱۴ روز آینده موعد مرور دارن</p><div id="chForecast"></div></div>
+  <div class="card-sec"><h3>دسته‌ها به ترتیب سختی</h3><p class="sub">درصد جواب‌هایی که Again زدی</p><div class="tbl" id="catTable"></div></div>
+  <div class="card-sec"><h3>سخت‌ترین کارت‌ها</h3><p class="sub">بیشترین Again</p><div class="list" id="hardList" style="padding:0"></div></div>
+  <div style="height:24px"></div>
 </section>
 
 <!-- ========== Settings ========== -->
@@ -285,17 +378,17 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
 
   <div class="group"><h3>نمایش و مرور</h3><div class="panel">
     <button class="row" id="themeRow"><span>تم</span><span class="v" id="themeLbl"></span></button>
-    <button class="row" id="hideKnownRow"><span>پنهان کردن کارت‌های بلد</span><span class="switch" id="hideKnownSw" role="switch" aria-checked="false"></span></button>
+    <div class="row"><span>کارت جدید در هر روز<span class="sub">چندتا کارت تازه وارد مرور امروز بشه</span></span><span class="stepper"><button id="npdMinus" aria-label="کمتر">−</button><b id="newPerDay">۲۰</b><button id="npdPlus" aria-label="بیشتر">+</button></span></div>
   </div></div>
 
   <div class="group"><h3>پشتیبان‌گیری</h3><div class="panel">
-    <button class="row" id="backupRow"><span>ذخیره‌ی پشتیبان<span class="sub">کارت‌های تو، دسته‌ها، پیشرفت و یادآوری‌ها در یه فایل JSON</span></span><span class="v">دانلود</span></button>
+    <button class="row" id="backupRow"><span>ذخیره‌ی پشتیبان<span class="sub">کارت‌های تو، دسته‌ها، زمان‌بندی مرور، گزارش‌ها و یادآوری‌ها در یه فایل JSON</span></span><span class="v">دانلود</span></button>
     <button class="row" id="restoreRow"><span>بازگردانی از فایل پشتیبان</span><span class="v">انتخاب فایل</span></button>
   </div>
   <p class="note">داده‌ها فقط روی همین گوشی و همین مرورگر ذخیره می‌شن. قبل از پاک کردن مرورگر یا عوض کردن گوشی، پشتیبان بگیر.</p></div>
 
   <div class="group"><h3>پیشرفت</h3><div class="panel">
-    <button class="row danger" id="resetRow"><span>پاک کردن علامت‌های «بلد» و «مرور»</span><span class="v">کارت‌ها می‌مونن</span></button>
+    <button class="row danger" id="resetRow"><span>پاک کردن پیشرفت و گزارش‌ها</span><span class="v">کارت‌ها می‌مونن</span></button>
   </div></div>
   <div style="height:24px"></div>
 </section>
@@ -303,6 +396,7 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
 <nav class="tabbar" role="tablist">
   <button class="tab" role="tab" data-v="study" aria-selected="true"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="3"/><path d="M7 3h11a3 3 0 0 1 3 3v11"/></svg>مرور</button>
   <button class="tab" role="tab" data-v="lib" aria-selected="false"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>کارت‌ها</button>
+  <button class="tab" role="tab" data-v="rep" aria-selected="false"><svg class="i" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>گزارش</button>
   <button class="tab" role="tab" data-v="set" aria-selected="false"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>تنظیمات</button>
 </nav>
 </div>
@@ -323,7 +417,7 @@ code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1
 <script src="vendor/xlsx.full.min.js" defer></script>
 <script>
 "use strict";
-const APP_VERSION = "1.0.2";
+const APP_VERSION = "1.1.0";
 const CATS0 = {
   idx:"ایندکس و ذخیره‌سازی", stat:"Statistics", plan:"Execution Plan", tsql:"T-SQL",
   conc:"تراکنش و قفل", wait:"tempdb و Wait", admin:"ادمین", ha:"HA / DR",
@@ -334,6 +428,7 @@ const BUILTIN = [{"c":"idx","q":"Page و Extent چی هستن و چرا مهمن
 /* ---------- utils ---------- */
 const $ = id => document.getElementById(id);
 const fa = n => Number(n).toLocaleString("fa-IR");
+const fa1 = n => Number(n).toLocaleString("fa-IR", {maximumFractionDigits:1});
 function hash(s){ let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h+s.charCodeAt(i))|0; return (h>>>0).toString(36); }
 const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 BUILTIN.forEach((c,i) => { c.id = "b" + hash(c.q); c.n = i+1; });
@@ -358,8 +453,9 @@ function download(name, blob){
   a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
+const buzz = () => { try{ navigator.vibrate && navigator.vibrate(8); }catch(e){} };
 
-/* ---------- storage (IndexedDB, falls back to localStorage) ---------- */
+/* ---------- storage ---------- */
 const lsGet = k => { try{ const v = localStorage.getItem("sqlcards:"+k); return v==null ? undefined : JSON.parse(v); }catch(e){ return undefined; } };
 const lsSet = (k,v) => { try{ localStorage.setItem("sqlcards:"+k, JSON.stringify(v)); }catch(e){} };
 const KV = (() => {
@@ -386,55 +482,176 @@ const KV = (() => {
 })();
 
 const S = {
-  status:{}, mine:[], cats:[],
-  set:{ filter:"all", shuffle:false, hideKnown:false, theme:"auto", seed:7, pos:0 },
+  status:{},           // legacy (v1.0): id -> "k" | "a"
+  srs:{},              // id -> {s, step, ivl, ease, due, reps, lapses, last}
+  log:[],              // {i, t, r, ms, p, iv}
+  daily:{ day:"", newSeen:0, extraNew:0 },
+  mine:[], cats:[],
+  set:{ mode:"today", filter:"all", shuffle:false, theme:"auto", seed:7, pos:0, newPerDay:20 },
   remind:{ on:false, times:["09:00","21:00"], last:0 }
 };
 const save = k => KV.set(k, JSON.parse(JSON.stringify(S[k])));
 
 /* ---------- data helpers ---------- */
 const all = () => BUILTIN.concat(S.mine);
+const byId = id => all().find(c => c.id === id);
 const cats = () => Object.keys(CATS0).map(k => ({k, n:CATS0[k], b:true})).concat(S.cats.map(c => ({k:c.k, n:c.n, b:false})));
 const catName = k => CATS0[k] || (S.cats.find(c => c.k === k) || {}).n || "بدون دسته";
 function findCat(name){ const n = norm(name); if (!n) return null; return cats().find(c => norm(c.n) === n || c.k === String(name).trim()) || null; }
 function addCat(name){ const ex = findCat(name); if (ex) return ex.k; const c = {k:uid("u"), n:String(name).trim()}; S.cats.push(c); save("cats"); return c.k; }
 function findDup(q, exceptId){ const n = norm(q); return all().find(c => c.id !== exceptId && norm(c.q) === n); }
 
+/* ---------- spaced repetition (SM-2, Anki-style) ---------- */
+const MIN = 60000, HOUR = 3600000, DAY = 86400000;
+const LEARN = [1, 10], RELEARN = [10];          // minutes
+const GRAD = 1, EASY_GRAD = 4, START_EASE = 2.5, MIN_EASE = 1.3, HARD_MULT = 1.2, EASY_BONUS = 1.3, MAX_IVL = 3650;
+const DAY_START_HOUR = 4;                         // a study day rolls over at 4 AM
+const LEARN_AHEAD = 20 * MIN;
+const RATINGS = { 4:"Easy", 3:"Good", 2:"Hard", 1:"Again" };
+function dayStart(t){ const d = new Date(t - DAY_START_HOUR*HOUR); d.setHours(0,0,0,0); return d.getTime() + DAY_START_HOUR*HOUR; }
+const dayKey = t => { const d = new Date(dayStart(t)); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); };
+const endOfToday = () => dayStart(Date.now()) + DAY;
+function sched(prev, r, now, fuzz=false){
+  const s = prev ? Object.assign({}, prev) : { s:"new", step:0, ivl:0, ease:START_EASE, reps:0, lapses:0 };
+  s.reps = (s.reps||0) + 1; s.last = now;
+  if (s.s === "new" || s.s === "learn"){
+    if (s.s === "new"){ s.s = "learn"; s.step = 0; }
+    if (r === 1){ s.step = 0; s.due = now + LEARN[0]*MIN; }
+    else if (r === 2){ const cur = LEARN[s.step] ?? LEARN[LEARN.length-1], nxt = LEARN[s.step+1]; s.due = now + (s.step === 0 && nxt ? (cur+nxt)/2 : cur*1.5)*MIN; }
+    else if (r === 3){ s.step++; if (s.step >= LEARN.length){ s.s = "review"; s.ivl = GRAD; s.due = dayStart(now) + GRAD*DAY; } else s.due = now + LEARN[s.step]*MIN; }
+    else { s.s = "review"; s.ivl = EASY_GRAD; s.due = dayStart(now) + EASY_GRAD*DAY; }
+    return s;
+  }
+  if (s.s === "relearn"){
+    if (r === 1){ s.step = 0; s.due = now + RELEARN[0]*MIN; }
+    else if (r === 2){ s.due = now + RELEARN[0]*1.5*MIN; }
+    else { s.s = "review"; if (r === 4) s.ivl += 1; s.due = dayStart(now) + s.ivl*DAY; }
+    return s;
+  }
+  // review
+  if (r === 1){
+    s.lapses = (s.lapses||0) + 1; s.ease = Math.max(MIN_EASE, s.ease - 0.2);
+    s.ivl = Math.max(1, Math.round(s.ivl * 0.5)); s.s = "relearn"; s.step = 0; s.due = now + RELEARN[0]*MIN;
+    return s;
+  }
+  const overdue = Math.max(0, (dayStart(now) - dayStart(s.due || now)) / DAY);
+  const hard = Math.max(s.ivl + 1, s.ivl * HARD_MULT);
+  const good = Math.max(hard + 1, (s.ivl + overdue/2) * s.ease);
+  const easy = Math.max(good + 1, (s.ivl + overdue) * s.ease * EASY_BONUS);
+  let ivl = r === 2 ? hard : r === 3 ? good : easy;
+  if (r === 2) s.ease = Math.max(MIN_EASE, s.ease - 0.15);
+  if (r === 4) s.ease += 0.15;
+  ivl = Math.round(ivl);
+  if (fuzz && ivl > 2){ const f = Math.max(1, Math.round(ivl * 0.05)); ivl += Math.round((Math.random()*2-1) * f); }
+  s.ivl = Math.min(MAX_IVL, Math.max(1, ivl)); s.due = dayStart(now) + s.ivl*DAY;
+  return s;
+}
+function fmtSpan(ms){
+  const m = ms / MIN;
+  if (m < 1) return "<۱ دقیقه";
+  if (m < 60) return fa(Math.round(m)) + " دقیقه";
+  const h = m / 60; if (h < 24) return fa(Math.round(h)) + " ساعت";
+  const d = h / 24; if (d < 30) return fa(Math.round(d)) + " روز";
+  const mo = d / 30; if (mo < 12) return fa1(Math.round(mo*10)/10) + " ماه";
+  return fa1(Math.round(d/365*10)/10) + " سال";
+}
+function previewLabel(id, r){
+  const now = Date.now(), n = sched(S.srs[id], r, now);
+  return n.s === "review" ? fmtSpan(n.ivl * DAY) : fmtSpan(n.due - now);
+}
+function stateOf(id){
+  const s = S.srs[id];
+  if (!s) return "new";
+  if (s.s === "learn" || s.s === "relearn") return "learn";
+  return s.due <= endOfToday() ? "due" : "wait";
+}
+const STATE_LBL = { new:"جدید", learn:"در حال یادگیری", due:"موعد مرور", wait:"منتظر مرور" };
+function againCount(id){ let n = 0; for (const l of S.log) if (l.i === id && l.r === 1) n++; return n; }
+const isHard = id => { const s = S.srs[id]; return (s && s.lapses >= 3) || againCount(id) >= 4; };
+function rollDay(){ const k = dayKey(Date.now()); if (S.daily.day !== k){ S.daily = { day:k, newSeen:0, extraNew:0 }; save("daily"); } }
+const newLeft = () => Math.max(0, S.set.newPerDay + (S.daily.extraNew||0) - S.daily.newSeen);
+const inFilter = c => { const f = S.set.filter; return f === "all" || (f === "mine" ? c.own : c.c === f); };
+
 /* ---------- study ---------- */
-let deck = [], flipped = false;
+let deck = [], flipped = false, shownAt = Date.now(), undo = null, pendingTimer = null;
 function buildDeck(){
-  const f = S.set.filter;
-  let list = all().filter(c => {
-    if (f === "again") return S.status[c.id] === "a";
-    if (f === "new") return !S.status[c.id];
-    if (f === "mine") { if (!c.own) return false; }
-    else if (f !== "all" && c.c !== f) return false;
-    if (S.set.hideKnown && S.status[c.id] === "k") return false;
-    return true;
-  });
-  if (S.set.shuffle){ const r = rng(S.set.seed + f.length); list = list.map(c => [r(), c]).sort((x,y) => x[0]-y[0]).map(x => x[1]); }
-  deck = list;
+  rollDay();
+  const now = Date.now(), eod = endOfToday();
+  const pool = all().filter(inFilter);
+  if (S.set.mode === "free"){
+    let list = pool;
+    if (S.set.shuffle){ const r = rng(S.set.seed + S.set.filter.length); list = list.map(c => [r(), c]).sort((x,y) => x[0]-y[0]).map(x => x[1]); }
+    deck = list;
+  } else {
+    const learnNow = [], learnLater = [], reviews = [], fresh = [];
+    for (const c of pool){
+      const s = S.srs[c.id];
+      if (!s) fresh.push(c);
+      else if (s.s === "learn" || s.s === "relearn"){ if (s.due <= now) learnNow.push(c); else if (s.due <= now + LEARN_AHEAD) learnLater.push(c); }
+      else if (s.due <= eod) reviews.push(c);
+    }
+    const bydue = (a,b) => S.srs[a.id].due - S.srs[b.id].due;
+    learnNow.sort(bydue); learnLater.sort(bydue); reviews.sort(bydue);
+    let news = fresh;
+    if (S.set.shuffle){ const r = rng(S.set.seed); news = news.map(c => [r(), c]).sort((x,y) => x[0]-y[0]).map(x => x[1]); }
+    news = news.slice(0, newLeft());
+    // mix new cards between reviews (1 new after every 2 reviews), learning cards that are due always first
+    const mixed = []; let ni = 0;
+    reviews.forEach((c, i) => { mixed.push(c); if (i % 2 === 1 && ni < news.length) mixed.push(news[ni++]); });
+    while (ni < news.length) mixed.push(news[ni++]);
+    deck = learnNow.concat(mixed);
+    // learning cards due within 20 min are shown only when nothing else is left
+    if (!deck.length) deck = learnLater;
+  }
   if (S.set.pos >= deck.length) S.set.pos = Math.max(0, deck.length-1);
 }
-function counts(){
-  const by = {}; let mine = 0, again = 0, fresh = 0, known = 0;
-  all().forEach(c => { by[c.c] = (by[c.c]||0)+1; if (c.own) mine++; const s = S.status[c.id]; if (s==="a") again++; else if (s==="k") known++; if (!s) fresh++; });
-  return {by, mine, again, fresh, known, total: all().length};
+function todayCounts(){
+  rollDay();
+  const now = Date.now(), eod = endOfToday();
+  let n = 0, l = 0, r = 0;
+  for (const c of all()){
+    if (!inFilter(c)) continue;
+    const s = S.srs[c.id];
+    if (!s) n++;
+    else if (s.s === "learn" || s.s === "relearn"){ if (s.due <= now + LEARN_AHEAD) l++; }
+    else if (s.due <= eod) r++;
+  }
+  return { n: Math.min(n, newLeft()), nAll:n, l, r };
 }
+function doneToday(){ const ds = dayStart(Date.now()); let n = 0; for (let i = S.log.length-1; i >= 0 && S.log[i].t >= ds; i--) n++; return n; }
 function renderChips(){
-  const n = counts(), f = S.set.filter;
-  const items = [["all","همه",n.total],["new","دیده‌نشده",n.fresh],["again","برای مرور",n.again]];
-  if (n.mine) items.push(["mine","کارت‌های من",n.mine,"mine"]);
-  cats().forEach(c => { if (n.by[c.k]) items.push([c.k, c.n, n.by[c.k], c.b ? "" : "mine"]); });
+  const by = {}; let mine = 0;
+  all().forEach(c => { by[c.c] = (by[c.c]||0)+1; if (c.own) mine++; });
+  const f = S.set.filter;
+  const items = [["all","همه",all().length]];
+  if (mine) items.push(["mine","کارت‌های من",mine,"mine"]);
+  cats().forEach(c => { if (by[c.k]) items.push([c.k, c.n, by[c.k], c.b ? "" : "mine"]); });
   $("chips").innerHTML = items.map(([k,l,c,cls]) => `<button class="chip ${cls||""}" data-f="${k}" aria-pressed="${f===k}">${esc(l)}<span class="n">${fa(c)}</span></button>`).join("");
 }
-function renderStats(){
-  const n = counts();
-  $("nk").textContent = fa(n.known); $("na").textContent = fa(n.again);
-  $("pk").style.width = (n.known/n.total*100)+"%"; $("pa").style.width = (n.again/n.total*100)+"%";
-  $("pos").textContent = fa(deck.length ? S.set.pos+1 : 0); $("tot").textContent = fa(deck.length);
+function renderTop(){
+  const tc = todayCounts();
+  $("modeToday").setAttribute("aria-pressed", S.set.mode === "today");
+  $("modeFree").setAttribute("aria-pressed", S.set.mode === "free");
+  $("todayBadge").textContent = fa(tc.n + tc.l + tc.r);
+  if (S.set.mode === "today"){
+    $("countsLine").innerHTML = `<span class="cnt new"><b>${fa(tc.n)}</b> جدید</span><span class="cnt learn"><b>${fa(tc.l)}</b> یادگیری</span><span class="cnt rev"><b>${fa(tc.r)}</b> مرور</span>`;
+    const done = doneToday(), left = tc.n + tc.l + tc.r, tot = done + left;
+    $("pk").style.width = (tot ? done/tot*100 : 100) + "%";
+    $("progLbl").textContent = `امروز ${fa(done)} از ${fa(tot)}`;
+  } else {
+    $("countsLine").innerHTML = `<span>کارت <b>${fa(deck.length ? S.set.pos+1 : 0)}</b> از <b>${fa(deck.length)}</b></span>`;
+    $("pk").style.width = (deck.length ? (S.set.pos+1)/deck.length*100 : 0) + "%";
+    $("progLbl").textContent = "مطالعه‌ی آزاد";
+  }
+  $("undoBtn").disabled = !undo;
 }
-function tagsHtml(c){ return `<span class="tag">${esc(catName(c.c))}</span>` + (c.own ? `<span class="tag mine">شخصی</span>` : ""); }
+function tagsHtml(c){ return `<span class="tag">${esc(catName(c.c))}</span>` + (c.own ? `<span class="tag mine">شخصی</span>` : "") + (isHard(c.id) ? `<span class="tag hard">سخت</span>` : ""); }
+function stateText(id){
+  const st = stateOf(id), s = S.srs[id];
+  if (st === "wait") return "مرور بعدی: " + fmtSpan(s.due - Date.now()) + " دیگه";
+  if (st === "due") return "موعد مرور";
+  return STATE_LBL[st];
+}
 function backHtml(c, withQ=true){
   const L = c.o ? "ol" : "ul";
   let h = withQ ? `<p class="back-q">${md(c.q)}</p>` : "";
@@ -444,67 +661,111 @@ function backHtml(c, withQ=true){
   if (c.tags && c.tags.length) h += `<div class="tagline"># ${c.tags.map(esc).join(" · ")}</div>`;
   return h;
 }
+function emptyHtml(){
+  const f = S.set.filter;
+  if (S.set.mode === "free") return `<b>کارتی اینجا نیست</b><span>${f==="mine" ? "هنوز کارتی اضافه نکردی. از دکمه‌ی + شروع کن." : "این دسته کارتی نداره."}</span>`;
+  const now = Date.now();
+  let nextLearn = Infinity, tomorrow = 0; const eod = endOfToday();
+  for (const c of all()){ if (!inFilter(c)) continue; const s = S.srs[c.id]; if (!s) continue;
+    if (s.s === "learn" || s.s === "relearn") nextLearn = Math.min(nextLearn, s.due);
+    else if (s.due > eod && s.due <= eod + DAY) tomorrow++; }
+  const tc = todayCounts();
+  let h = `<b>مرور امروز تموم شد</b>`;
+  if (nextLearn < Infinity) h += `<span>یه کارت در حال یادگیری ${fmtSpan(Math.max(0, nextLearn - now))} دیگه آماده می‌شه.</span>`;
+  h += `<span>فردا ${fa(tomorrow)} کارت موعد مرور داری.</span>`;
+  h += `<div class="empty-actions">`;
+  if (tc.nAll > 0) h += `<button class="btn primary" id="moreNew">۱۰ کارت جدید دیگه</button>`;
+  h += `<button class="btn" id="goFree">مطالعه‌ی آزاد</button></div>`;
+  return h;
+}
 function renderCard(){
   const card = $("card");
   setFlip(false, true);
+  clearTimeout(pendingTimer);
   if (!deck.length){
-    card.style.visibility = "hidden"; $("empty").classList.add("show");
-    const f = S.set.filter;
-    $("emptyMsg").textContent = f==="again" ? "هنوز کارتی رو برای مرور علامت نزدی." :
-      f==="new" ? "همه‌ی کارت‌ها رو دیدی. عالیه!" :
-      f==="mine" ? "هنوز کارتی اضافه نکردی. از دکمه‌ی + شروع کن." :
-      "همه‌ی کارت‌های این دسته رو بلدی. «پنهان کردن کارت‌های بلد» رو در تنظیمات خاموش کن.";
+    card.style.visibility = "hidden"; $("empty").classList.add("show"); $("empty").innerHTML = emptyHtml();
+    $("ctlFront").hidden = $("ctlBack").hidden = true;
+    if ($("moreNew")) $("moreNew").onclick = () => { S.daily.extraNew = (S.daily.extraNew||0) + 10; save("daily"); refreshStudy(); };
+    if ($("goFree")) $("goFree").onclick = () => setMode("free");
+    if (S.set.mode === "today") pendingTimer = setTimeout(refreshStudy, 30000);
   } else {
     card.style.visibility = ""; $("empty").classList.remove("show");
-    const c = deck[S.set.pos], st = S.status[c.id];
+    const c = deck[S.set.pos];
     $("fTags").innerHTML = $("bTags").innerHTML = tagsHtml(c);
-    $("fNum").textContent = c.own ? "" : "#" + fa(c.n);
+    $("fNum").textContent = STATE_LBL[stateOf(c.id)] === "جدید" ? "جدید" : (c.own ? "" : "#" + fa(c.n));
     $("fQ").innerHTML = md(c.q);
-    $("bStatus").className = "status-pill " + (st||"");
-    $("bStatus").textContent = st==="k" ? "✓ بلد" : st==="a" ? "↻ برای مرور" : "";
+    $("bStatus").textContent = stateText(c.id);
+    $("editCard").hidden = !c.own;
     $("backBody").innerHTML = backHtml(c);
     $("backBody").scrollTop = 0;
+    [4,3,2,1].forEach(r => $("iv"+r).textContent = previewLabel(c.id, r));
+    $("ctlFront").hidden = false; $("ctlBack").hidden = true;
+    shownAt = Date.now();
   }
   const p = S.set.pos;
   $("prevBtn").disabled = p <= 0 || !deck.length;
   $("nextBtn").disabled = p >= deck.length-1 || !deck.length;
-  $("againBtn").disabled = $("goodBtn").disabled = !deck.length;
-  renderStats(); save("set");
+  renderTop(); save("set");
 }
 function setFlip(v, instant){
   const card = $("card"); flipped = v;
   if (instant) card.style.transition = "none";
   card.classList.toggle("flipped", v);
   if (instant){ void card.offsetWidth; card.style.transition = ""; }
+  if (deck.length){ $("ctlFront").hidden = v; $("ctlBack").hidden = !v; }
 }
 function go(delta){
   const np = S.set.pos + delta;
   if (np < 0 || np >= deck.length) return;
+  slide(delta, () => { S.set.pos = np; renderCard(); });
+}
+function slide(delta, swap){
   const card = $("card");
   card.classList.add("swipe");
   card.style.transform = `translateX(${delta>0 ? -110 : 110}%) ${flipped ? "rotateY(180deg)" : ""}`;
   card.style.opacity = "0";
   setTimeout(() => {
-    S.set.pos = np; card.classList.remove("swipe");
+    card.classList.remove("swipe");
     card.style.transition = "none"; card.style.transform = `translateX(${delta>0 ? 60 : -60}%)`;
-    renderCard(); void card.offsetWidth;
+    swap(); void card.offsetWidth;
     card.style.transition = "transform .25s ease, opacity .25s ease";
     card.style.transform = ""; card.style.opacity = "";
     setTimeout(() => card.style.transition = "", 260);
   }, 200);
 }
-function mark(v){
-  if (!deck.length) return;
-  const c = deck[S.set.pos];
-  S.status[c.id] = v; save("status");
-  toast(v==="k" ? "ثبت شد: بلد بودم" : "به لیست مرور اضافه شد");
-  const f = S.set.filter;
-  const removes = (v==="k" && (S.set.hideKnown || f==="again")) || f==="new";
-  renderChips();
-  if (removes){ buildDeck(); renderCard(); }
-  else if (S.set.pos < deck.length-1) go(1);
-  else renderCard();
+function rate(r){
+  if (!deck.length || !flipped) return;
+  buzz();
+  const c = deck[S.set.pos], now = Date.now(), prev = S.srs[c.id];
+  const pState = prev ? prev.s : "new";
+  undo = { id:c.id, prev: prev ? Object.assign({}, prev) : null, logLen:S.log.length, daily:Object.assign({}, S.daily), pos:S.set.pos, mode:S.set.mode };
+  const next = sched(prev, r, now, true);
+  S.srs[c.id] = next;
+  S.log.push({ i:c.id, t:now, r, ms:Math.min(5*MIN, now - shownAt), p:pState, iv: next.s === "review" ? next.ivl : 0 });
+  if (S.log.length > 30000) S.log.splice(0, S.log.length - 30000);
+  if (pState === "new"){ rollDay(); S.daily.newSeen++; save("daily"); }
+  save("srs"); save("log");
+  const label = next.s === "review" ? fmtSpan(next.ivl*DAY) : fmtSpan(next.due - now);
+  toast(`${RATINGS[r]} · مرور بعدی ${label} دیگه`);
+  slide(1, () => {
+    if (S.set.mode === "today"){ const keep = S.set.pos; buildDeck(); S.set.pos = Math.min(keep, Math.max(0, deck.length-1)); }
+    else if (S.set.pos < deck.length-1) S.set.pos++;
+    renderCard();
+  });
 }
+function doUndo(){
+  if (!undo) return;
+  if (undo.prev) S.srs[undo.id] = undo.prev; else delete S.srs[undo.id];
+  S.log.length = undo.logLen; S.daily = undo.daily;
+  save("srs"); save("log"); save("daily");
+  const id = undo.id; undo = null;
+  buildDeck();
+  let i = deck.findIndex(c => c.id === id);
+  if (i < 0){ deck.unshift(byId(id)); i = 0; }
+  S.set.pos = i; renderCard(); setFlip(true);
+  toast("آخرین امتیاز برگشت");
+}
+function setMode(m){ S.set.mode = m; S.set.pos = 0; refreshStudy(); }
 function refreshStudy(){ buildDeck(); renderChips(); renderCard(); }
 
 (() => {
@@ -528,11 +789,11 @@ function refreshStudy(){ buildDeck(); renderChips(); renderCard(); }
     if (horiz && Math.abs(dx) > 60 && target >= 0 && target < deck.length) go(dx<0 ? 1 : -1);
     else { card.style.transform=""; if (horiz===null) setFlip(!flipped); }
   };
-  card.addEventListener("touchstart", e => { if (e.touches.length===1) begin(e.touches[0].clientX, e.touches[0].clientY); else active=false; }, {passive:true});
+  card.addEventListener("touchstart", e => { if (e.target.closest("#editCard")) return; if (e.touches.length===1) begin(e.touches[0].clientX, e.touches[0].clientY); else active=false; }, {passive:true});
   card.addEventListener("touchmove", e => { if (e.touches.length===1) move(e.touches[0].clientX, e.touches[0].clientY, e); }, {passive:false});
   card.addEventListener("touchend", e => { if (active && e.cancelable) e.preventDefault(); finish(); }, {passive:false});
   card.addEventListener("touchcancel", finish, {passive:true});
-  card.addEventListener("pointerdown", e => { if (e.pointerType==="mouse") begin(e.clientX, e.clientY); });
+  card.addEventListener("pointerdown", e => { if (e.pointerType==="mouse" && !e.target.closest("#editCard")) begin(e.clientX, e.clientY); });
   window.addEventListener("pointermove", e => { if (e.pointerType==="mouse") move(e.clientX, e.clientY, null); });
   window.addEventListener("pointerup", e => { if (e.pointerType==="mouse") finish(); });
 })();
@@ -543,52 +804,60 @@ function show(v){
   document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t.dataset.v === v));
   if (v === "lib") renderLib();
   if (v === "set") renderSettings();
+  if (v === "rep") renderReport();
   if (v === "study") refreshStudy();
 }
 
 /* ---------- library ---------- */
 let libQ = "", libF = "all";
 function renderLib(){
-  const n = counts();
-  const chips = [["all","همه",n.total],["mine","کارت‌های من",n.mine,"mine"],["again","برای مرور",n.again],["k","بلد",n.known]];
+  const st = { new:0, learn:0, due:0, wait:0 }; let mine = 0, hard = 0;
+  all().forEach(c => { st[stateOf(c.id)]++; if (c.own) mine++; if (isHard(c.id)) hard++; });
+  const chips = [["all","همه",all().length],["new","جدید",st.new],["learn","در حال یادگیری",st.learn],["due","موعد مرور",st.due],["wait","منتظر مرور",st.wait],["hard","سخت",hard],["mine","کارت‌های من",mine,"mine"]];
   $("libChips").innerHTML = chips.map(([k,l,c,cls]) => `<button class="chip ${cls||""}" data-lf="${k}" aria-pressed="${libF===k}">${l}<span class="n">${fa(c)}</span></button>`).join("");
   const q = normS(libQ);
   let list = all();
   if (libF === "mine") list = list.filter(c => c.own);
-  else if (libF === "again") list = list.filter(c => S.status[c.id] === "a");
-  else if (libF === "k") list = list.filter(c => S.status[c.id] === "k");
+  else if (libF === "hard") list = list.filter(c => isHard(c.id));
+  else if (libF !== "all") list = list.filter(c => stateOf(c.id) === libF);
   if (q) list = list.filter(c => normS([c.q, c.h, (c.p||[]).join(" "), (c.tags||[]).join(" "), catName(c.c)].join(" ")).includes(q));
   if (libF === "mine") list = list.slice().sort((a,b) => (b.t||0) - (a.t||0));
+  if (libF === "wait" || libF === "due") list = list.slice().sort((a,b) => S.srs[a.id].due - S.srs[b.id].due);
   $("libCount").textContent = fa(list.length) + " کارت";
   if (!list.length){
-    $("libList").innerHTML = `<div class="lib-empty">${libF==="mine" && !q ? "هنوز کارت شخصی نداری.<br>با «کارت جدید» یکی اضافه کن یا یه فایل اکسل وارد کن." : "کارتی با این جستجو پیدا نشد."}</div>`;
+    $("libList").innerHTML = `<div class="lib-empty">${libF==="mine" && !q ? "هنوز کارت شخصی نداری.<br>با «کارت جدید» یکی اضافه کن یا یه فایل اکسل وارد کن." : "کارتی اینجا نیست."}</div>`;
     return;
   }
-  $("libList").innerHTML = list.slice(0, 400).map(c => {
-    const st = S.status[c.id];
-    return `<button class="item" data-id="${c.id}"><span class="t">${md(c.q)}</span><span class="m">${tagsHtml(c)}${st==="k" ? '<span style="color:var(--good)">✓ بلد</span>' : st==="a" ? '<span style="color:var(--again)">↻ مرور</span>' : ""}</span></button>`;
-  }).join("");
+  $("libList").innerHTML = list.slice(0, 400).map(c =>
+    `<button class="item" data-id="${c.id}"><span class="t">${md(c.q)}</span><span class="m">${tagsHtml(c)}<span class="st st-${stateOf(c.id)}">${esc(stateText(c.id))}</span></span></button>`).join("");
 }
 function showDetail(id){
-  const c = all().find(x => x.id === id); if (!c) return;
+  const c = byId(id); if (!c) return;
+  const s = S.srs[id], ag = againCount(id);
+  const meta = s ? `<p class="note" style="margin:0 0 10px">${esc(stateText(id))} · ${fa(s.reps)} بار مرور · ${fa(ag)} بار Again · سهولت ${fa1(Math.round(s.ease*100)/100)}</p>` : `<p class="note" style="margin:0 0 10px">هنوز مرور نشده</p>`;
   openSheet(c.own ? "کارت شخصی" : "کارت #" + fa(c.n),
-    `<div class="tags" style="margin-bottom:10px">${tagsHtml(c)}</div><div class="rich">${backHtml(c)}</div>`,
+    `<div class="tags" style="margin-bottom:8px">${tagsHtml(c)}</div>${meta}<div class="rich">${backHtml(c)}</div>`,
     (c.own ? `<button class="btn danger" id="dDel">حذف</button><button class="btn" id="dEdit">ویرایش</button>` : "") +
-    `<button class="btn primary" id="dGo">مرور از این کارت</button>`);
+    (s ? `<button class="btn" id="dReset">از اول</button>` : "") +
+    `<button class="btn primary" id="dGo">مطالعه</button>`);
   $("dGo").onclick = () => jumpTo(c);
+  if ($("dReset")) $("dReset").onclick = async () => {
+    if (!await ask("شروع از اول", "زمان‌بندی این کارت پاک می‌شه و دوباره جدید حساب می‌شه. سابقه‌ی گزارش‌ها می‌مونه.", "از اول")) return;
+    delete S.srs[id]; save("srs"); closeSheet(); renderLib(); toast("کارت دوباره جدید شد");
+  };
   if (c.own){
     $("dEdit").onclick = () => openForm(c);
     $("dDel").onclick = async () => {
       if (!await ask("حذف کارت", "این کارت برای همیشه حذف می‌شه.", "حذف", true)) return;
-      S.mine = S.mine.filter(x => x.id !== c.id); delete S.status[c.id];
-      save("mine"); save("status"); closeSheet(); renderLib(); toast("کارت حذف شد");
+      S.mine = S.mine.filter(x => x.id !== c.id); delete S.srs[c.id];
+      save("mine"); save("srs"); closeSheet(); renderLib(); toast("کارت حذف شد");
     };
   }
 }
 function jumpTo(c){
-  S.set.filter = c.c; buildDeck();
+  S.set.mode = "free"; S.set.filter = c.c; buildDeck();
   let i = deck.findIndex(x => x.id === c.id);
-  if (i < 0){ S.set.filter = "all"; S.set.hideKnown = false; save("set"); buildDeck(); i = deck.findIndex(x => x.id === c.id); }
+  if (i < 0){ S.set.filter = "all"; buildDeck(); i = deck.findIndex(x => x.id === c.id); }
   S.set.pos = Math.max(0, i); closeSheet();
   document.querySelectorAll(".view").forEach(x => x.classList.toggle("active", x.id === "v-study"));
   document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t.dataset.v === "study"));
@@ -646,7 +915,10 @@ function openForm(card){
     S.set.lastCat = c; save("mine"); save("set");
     toast(card ? "تغییرات ذخیره شد" : "کارت اضافه شد");
     renderChips(); if ($("v-lib").classList.contains("active")) renderLib();
-    if ($("v-study").classList.contains("active")) { buildDeck(); renderCard(); }
+    if ($("v-study").classList.contains("active")){
+      if (card){ const i = deck.findIndex(x => x.id === obj.id); if (i >= 0) deck[i] = obj; const wasFlipped = flipped; renderCard(); if (wasFlipped) setFlip(true, true); }
+      else { buildDeck(); renderCard(); }
+    }
     if (more) openForm(); else closeSheet();
   };
   $("fSave").onclick = () => doSave(false);
@@ -733,11 +1005,127 @@ function exportMine(){
   XLSX.writeFile(wb, "my-sql-cards.xlsx");
 }
 
+/* ---------- report ---------- */
+const svgNS = "http://www.w3.org/2000/svg";
+function barChart(el, values, opts){
+  // values: numbers; opts: {labelAt(i)->string|null, tip(i)->string, h}
+  const W = 320, H = opts.h || 120, padT = 8, padB = 18, gap = 2;
+  const max = Math.max(1, ...values);
+  const bw = (W - gap*(values.length-1)) / values.length;
+  let g = `<line x1="0" y1="${H-padB}" x2="${W}" y2="${H-padB}" class="axis"/>`;
+  g += `<line x1="0" y1="${padT}" x2="${W}" y2="${padT}" class="grid"/>`;
+  values.forEach((v, i) => {
+    // RTL: first value on the right
+    const x = W - (i+1)*bw - i*gap;
+    const bh = v ? Math.max(2, (H-padT-padB) * v / max) : 0;
+    const y = H - padB - bh;
+    if (bh) g += `<path d="M${x},${H-padB} V${y+Math.min(3,bh)} q0,-3 3,-3 H${x+bw-3} q3,0 3,3 V${H-padB} Z" class="bar${opts.hi && opts.hi(i) ? " hi" : ""}"/>`;
+    g += `<rect x="${x}" y="0" width="${bw+gap}" height="${H}" class="hit" data-i="${i}"/>`;
+    const lb = opts.labelAt && opts.labelAt(i);
+    if (lb) g += `<text x="${x+bw/2}" y="${H-4}" class="tick" text-anchor="middle">${esc(lb)}</text>`;
+  });
+  g += `<text x="${W}" y="${padT-1}" class="tick" text-anchor="end" dy="-1">${fa(max)}</text>`;
+  el.innerHTML = `<div class="readout" aria-live="polite">${esc(opts.idle)}</div><svg viewBox="0 -4 ${W} ${H+4}" class="chart" role="img" aria-label="${esc(opts.aria)}">${g}</svg>`;
+  const ro = el.querySelector(".readout"), svg = el.querySelector("svg");
+  const pick = e => { const t = e.target.closest(".hit"); if (!t) return; const i = +t.dataset.i;
+    svg.querySelectorAll(".hit.on").forEach(x => x.classList.remove("on")); t.classList.add("on"); ro.textContent = opts.tip(i); };
+  svg.addEventListener("pointerdown", pick); svg.addEventListener("pointermove", pick);
+  svg.addEventListener("pointerleave", () => { svg.querySelectorAll(".hit.on").forEach(x => x.classList.remove("on")); ro.textContent = opts.idle; });
+}
+const faDate = t => new Date(t).toLocaleDateString("fa-IR", {month:"short", day:"numeric"});
+function streak(){
+  const days = new Set(S.log.map(l => dayKey(l.t)));
+  let n = 0, t = Date.now();
+  if (!days.has(dayKey(t))) t -= DAY;           // today not studied yet: count up to yesterday
+  while (days.has(dayKey(t))){ n++; t -= DAY; }
+  return n;
+}
+function renderReport(){
+  const now = Date.now(), ds = dayStart(now);
+  const today = S.log.filter(l => l.t >= ds);
+  const last30 = S.log.filter(l => l.t >= ds - 29*DAY);
+  const msToday = today.reduce((a,l) => a + (l.ms||0), 0);
+  const revs = last30.filter(l => l.p === "review");
+  const acc = revs.length ? Math.round(revs.filter(l => l.r > 1).length / revs.length * 100) : null;
+  $("tiles").innerHTML = [
+    [fa(today.length), "مرور امروز"],
+    [fa(Math.round(msToday/MIN)) + " دقیقه", "زمان امروز"],
+    [acc == null ? "—" : fa(acc) + "٪", "به‌خاطر سپردن (۳۰ روز)"],
+    [fa(streak()) + " روز", "روزهای پشت‌سرهم"]
+  ].map(([v,l]) => `<div class="tile"><b>${v}</b><span>${l}</span></div>`).join("");
+
+  // card states
+  const st = { new:0, learn:0, due:0, wait:0 };
+  all().forEach(c => st[stateOf(c.id)]++);
+  const total = all().length, rows = [["new","خوانده‌نشده (جدید)"],["learn","در حال یادگیری"],["due","موعد مرور امروز"],["wait","خوانده‌شده، منتظر مرور"]];
+  $("states").innerHTML = rows.map(([k,l]) => `<button class="hrow" data-lf="${k}"><span class="hl">${l}</span><span class="hb"><i style="width:${total ? st[k]/total*100 : 0}%"></i></span><span class="hv">${fa(st[k])}</span></button>`).join("");
+
+  // daily reviews, last 30 days (first item = oldest, drawn on the right)
+  const perDay = Array(30).fill(0), msDay = Array(30).fill(0);
+  last30.forEach(l => { const i = 29 - Math.floor((ds - dayStart(l.t)) / DAY); if (i >= 0 && i < 30){ perDay[i]++; msDay[i] += l.ms||0; } });
+  const dayT = i => ds - (29-i)*DAY;
+  const tot30 = perDay.reduce((a,b) => a+b, 0), active = perDay.filter(Boolean).length;
+  barChart($("chDaily"), perDay, {
+    h:110, aria:"تعداد مرور در ۳۰ روز گذشته",
+    idle:`${fa(tot30)} مرور در ${fa(active)} روز · میانگین ${fa(active ? Math.round(tot30/active) : 0)} در روزهای مطالعه`,
+    tip:i => `${faDate(dayT(i))}: ${fa(perDay[i])} مرور · ${fa(Math.round(msDay[i]/MIN))} دقیقه`,
+    labelAt:i => (i === 0 || i === 29 || i === 14) ? (i === 29 ? "امروز" : faDate(dayT(i))) : null,
+    hi:i => i === 29
+  });
+
+  // ratings
+  const rc = {1:0,2:0,3:0,4:0}; last30.forEach(l => rc[l.r]++);
+  const rt = rc[1]+rc[2]+rc[3]+rc[4];
+  const order = [4,3,2,1];
+  $("ratings").innerHTML = rt ? `<div class="seg">${order.filter(r => rc[r]).map(r => `<i class="r${r}" style="flex:${rc[r]}"></i>`).join("")}</div>
+    <div class="legend">${[4,3,2,1].map(r => `<span><i class="sw r${r}"></i>${RATINGS[r]} <b>${fa(rc[r])}</b> <em>${fa(Math.round(rc[r]/rt*100))}٪</em></span>`).join("")}</div>`
+    : `<p class="note">هنوز امتیازی ثبت نشده.</p>`;
+
+  // hour of day
+  const hours = Array(24).fill(0); S.log.forEach(l => hours[new Date(l.t).getHours()]++);
+  const best = hours.indexOf(Math.max(...hours));
+  const hourTxt = h => fa(String(h).padStart(2,"0")) + ":۰۰";
+  barChart($("chHours"), hours, {
+    h:90, aria:"مرورها بر اساس ساعت روز",
+    idle: S.log.length ? `بیشتر حدود ساعت ${hourTxt(best)} مطالعه می‌کنی` : "هنوز داده‌ای نیست",
+    tip:i => `ساعت ${hourTxt(i)} تا ${hourTxt((i+1)%24)}: ${fa(hours[i])} مرور`,
+    labelAt:i => i % 6 === 0 ? fa(i) : (i === 23 ? fa(23) : null),
+    hi:i => S.log.length && i === best
+  });
+
+  // forecast next 14 days
+  const fc = Array(14).fill(0);
+  Object.values(S.srs).forEach(s => { if (s.s !== "review") { if (s.due) fc[0]++; return; } const i = Math.max(0, Math.floor((dayStart(s.due) - ds) / DAY)); if (i < 14) fc[i]++; });
+  barChart($("chForecast"), fc, {
+    h:90, aria:"تعداد کارت‌هایی که در ۱۴ روز آینده موعد مرور دارن",
+    idle:`${fa(fc.reduce((a,b)=>a+b,0))} مرور در ۱۴ روز آینده · فردا ${fa(fc[1])}`,
+    tip:i => `${i===0 ? "امروز" : i===1 ? "فردا" : faDate(ds + i*DAY)}: ${fa(fc[i])} کارت`,
+    labelAt:i => i === 0 ? "امروز" : i === 7 ? "هفته‌ی بعد" : i === 13 ? faDate(ds+13*DAY) : null,
+    hi:i => i === 0
+  });
+
+  // categories by difficulty
+  const cat = {};
+  S.log.forEach(l => { const c = byId(l.i); if (!c) return; const k = c.c; cat[k] = cat[k] || {n:0, a:0, ms:0}; cat[k].n++; if (l.r === 1) cat[k].a++; cat[k].ms += l.ms||0; });
+  const crow = Object.entries(cat).sort((x,y) => y[1].a/y[1].n - x[1].a/x[1].n);
+  $("catTable").innerHTML = crow.length ? `<table><thead><tr><th>دسته</th><th>مرور</th><th>Again</th><th>زمان هر جواب</th></tr></thead><tbody>${
+    crow.map(([k,v]) => `<tr><td>${esc(catName(k))}</td><td>${fa(v.n)}</td><td>${fa(Math.round(v.a/v.n*100))}٪</td><td>${fa(Math.round(v.ms/v.n/1000))} ثانیه</td></tr>`).join("")}</tbody></table>`
+    : `<p class="note">بعد از چند مرور، اینجا دسته‌ها به ترتیب سختی میان.</p>`;
+
+  // hardest cards
+  const ag = {}; S.log.forEach(l => { if (l.r === 1) ag[l.i] = (ag[l.i]||0) + 1; });
+  const hard = Object.entries(ag).filter(([id]) => byId(id)).sort((a,b) => b[1]-a[1]).slice(0, 8);
+  $("hardList").innerHTML = hard.length ? hard.map(([id,n]) => { const c = byId(id);
+    return `<button class="item" data-id="${id}"><span class="t">${md(c.q)}</span><span class="m"><span class="tag">${esc(catName(c.c))}</span><span>${fa(n)} بار Again</span></span></button>`; }).join("")
+    : `<p class="note">هنوز کارتی رو Again نزدی.</p>`;
+  $("repEmpty").hidden = S.log.length > 0;
+}
+
 /* ---------- backup ---------- */
 function backup(){
-  const data = { app:"sqlcards", v:1, at:new Date().toISOString(), mine:S.mine, cats:S.cats, status:S.status, remind:S.remind };
+  const data = { app:"sqlcards", v:2, at:new Date().toISOString(), mine:S.mine, cats:S.cats, srs:S.srs, log:S.log, daily:S.daily, remind:S.remind, newPerDay:S.set.newPerDay };
   const d = new Date(); const stamp = d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-  download(`sql-cards-backup-${stamp}.json`, new Blob([JSON.stringify(data, null, 1)], {type:"application/json"}));
+  download(`sql-cards-backup-${stamp}.json`, new Blob([JSON.stringify(data)], {type:"application/json"}));
   toast("فایل پشتیبان ساخته شد");
 }
 $("jsonFile").onchange = async e => {
@@ -745,25 +1133,37 @@ $("jsonFile").onchange = async e => {
   try{
     const d = JSON.parse(await file.text());
     if (d.app !== "sqlcards") throw new Error("not a backup");
-    if (!await ask("بازگردانی پشتیبان", `${fa((d.mine||[]).length)} کارت شخصی و پیشرفت ذخیره‌شده با داده‌های فعلی ادغام می‌شن.`, "بازگردانی")) return;
+    if (!await ask("بازگردانی پشتیبان", `${fa((d.mine||[]).length)} کارت شخصی، زمان‌بندی مرورها و سابقه‌ی گزارش با داده‌های فعلی ادغام می‌شن.`, "بازگردانی")) return;
     (d.cats||[]).forEach(c => { if (!S.cats.find(x => x.k === c.k)) S.cats.push(c); });
     (d.mine||[]).forEach(c => { const i = S.mine.findIndex(x => x.id === c.id); if (i >= 0) S.mine[i] = c; else S.mine.push(c); });
-    Object.assign(S.status, d.status||{});
+    Object.entries(d.srs||{}).forEach(([id,s]) => { if (!S.srs[id] || (s.last||0) > (S.srs[id].last||0)) S.srs[id] = s; });
+    if (d.status) migrate(d.status);
+    if (d.log){ const seen = new Set(S.log.map(l => l.i + l.t)); d.log.forEach(l => { if (!seen.has(l.i + l.t)) S.log.push(l); }); S.log.sort((a,b) => a.t - b.t); }
     if (d.remind) S.remind = Object.assign(S.remind, d.remind);
-    save("cats"); save("mine"); save("status"); save("remind");
+    if (d.newPerDay) S.set.newPerDay = d.newPerDay;
+    ["cats","mine","srs","log","remind","set"].forEach(save);
     renderSettings(); toast("پشتیبان بازگردانی شد");
   }catch(err){ toast("این فایل، فایل پشتیبان این اپ نیست"); }
 };
+function migrate(status){
+  // v1.0 marks: "k" (knew it) becomes a review card due in 1–3 days, "a" (again) becomes a learning card due now
+  const now = Date.now(); let n = 0;
+  Object.entries(status||{}).forEach(([id, v]) => {
+    if (S.srs[id]) return;
+    if (v === "k"){ const iv = 1 + Math.floor(Math.random()*3); S.srs[id] = { s:"review", step:0, ivl:iv, ease:START_EASE, reps:1, lapses:0, last:now, due:dayStart(now) + iv*DAY }; n++; }
+    else if (v === "a"){ S.srs[id] = { s:"learn", step:0, ivl:0, ease:START_EASE, reps:1, lapses:0, last:now, due:now }; n++; }
+  });
+  return n;
+}
 
 /* ---------- categories ---------- */
 function renderCats(){
-  const by = counts().by;
-  const mineCats = S.cats;
-  $("catPanel").innerHTML = (mineCats.length ? mineCats.map(c => `<button class="row" data-cat="${c.k}"><span>${esc(c.n)}<span class="sub">${fa(by[c.k]||0)} کارت</span></span><span class="v">مدیریت</span></button>`).join("") : "") +
+  const by = {}; all().forEach(c => by[c.c] = (by[c.c]||0)+1);
+  $("catPanel").innerHTML = S.cats.map(c => `<button class="row" data-cat="${c.k}"><span>${esc(c.n)}<span class="sub">${fa(by[c.k]||0)} کارت</span></span><span class="v">مدیریت</span></button>`).join("") +
     `<button class="row" id="newCatRow"><span>دسته‌ی جدید</span><span class="v">+</span></button>`;
 }
 function catSheet(k){
-  const c = S.cats.find(x => x.k === k), n = counts().by[k] || 0;
+  const c = S.cats.find(x => x.k === k), n = all().filter(x => x.c === k).length;
   openSheet("مدیریت دسته", `
     <div class="field"><label for="catName">اسم دسته</label><input id="catName" value="${esc(c ? c.n : "")}" placeholder="مثلاً: BABOK یا SSIS"></div>
     ${c && n ? `<div class="field"><label for="catMove">کارت‌های این دسته (${fa(n)} کارت) موقع حذف به کجا برن؟</label><select id="catMove">${cats().filter(x => x.k !== k).map(x => `<option value="${x.k}">${esc(x.n)}</option>`).join("")}</select></div>` : ""}
@@ -789,7 +1189,7 @@ function catSheet(k){
 const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
 let swReg = null, installEvt = null;
-function nextTimes(){ return S.remind.times.slice().sort(); }
+const sortedTimes = () => S.remind.times.slice().sort();
 async function registerPeriodic(){
   try{
     if (!swReg || !("periodicSync" in swReg)) return false;
@@ -817,30 +1217,30 @@ async function toggleNotif(){
   renderSettings();
   toast(periodic ? "یادآوری روشن شد" : "روشن شد؛ برای ساعت دقیق، آلارم تقویم رو هم اضافه کن");
 }
+function reminderBody(){
+  const f = S.set.filter; S.set.filter = "all"; const tc = todayCounts(); S.set.filter = f;
+  const due = tc.l + tc.r;
+  return due ? `${fa(due)} کارت موعد مرور داره${tc.n ? ` و ${fa(tc.n)} کارت جدید منتظرته` : ""}.` : `${fa(tc.n)} کارت جدید برای امروز داری.`;
+}
 function checkDueInApp(){
-  // when the app is open (or resumes), fire a reminder if a scheduled time passed since the last one
   if (!S.remind.on || !("Notification" in window) || Notification.permission !== "granted") return;
   const now = new Date(), last = S.remind.last || 0;
-  for (const t of nextTimes()){
+  for (const t of sortedTimes()){
     const [hh, mm] = t.split(":").map(Number);
     const at = new Date(now); at.setHours(hh, mm, 0, 0);
     if (at.getTime() <= now.getTime() && at.getTime() > last){
       S.remind.last = now.getTime(); save("remind");
-      if (document.visibilityState === "visible") return; // user is already here
+      if (document.visibilityState === "visible") return;
       notify("وقت مرور فلش‌کارت‌هاست", reminderBody()); return;
     }
   }
-}
-function reminderBody(){
-  const n = counts();
-  return n.again ? `${fa(n.again)} کارت برای مرور داری. چند دقیقه وقت بذار.` : `${fa(n.fresh)} کارت هنوز ندیدی. بیا چندتاش رو ببین.`;
 }
 function makeIcs(){
   if (!S.remind.times.length){ toast("اول یه ساعت اضافه کن"); return; }
   const d = new Date(), ymd = d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");
   const stamp = new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
   const url = location.protocol.startsWith("http") ? location.href.split("#")[0] : "";
-  const ev = nextTimes().map((t,i) => {
+  const ev = sortedTimes().map(t => {
     const hm = t.replace(":","") + "00";
     const end = (() => { const [h,m] = t.split(":").map(Number); const x = new Date(2000,0,1,h,m+15); return String(x.getHours()).padStart(2,"0")+String(x.getMinutes()).padStart(2,"0")+"00"; })();
     return ["BEGIN:VEVENT", `UID:sqlcards-${t.replace(":","")}-${ymd}@sqlcards`, `DTSTAMP:${stamp}`,
@@ -854,7 +1254,7 @@ function makeIcs(){
   toast("فایل تقویم ساخته شد؛ بازش کن و اضافه‌ش کن");
 }
 function renderTimes(){
-  $("times").innerHTML = S.remind.times.length ? nextTimes().map(t => `<span class="time-chip">${t}<button data-rm="${t}" aria-label="حذف ساعت ${t}"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></span>`).join("")
+  $("times").innerHTML = S.remind.times.length ? sortedTimes().map(t => `<span class="time-chip">${t}<button data-rm="${t}" aria-label="حذف ساعت ${t}"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></span>`).join("")
     : `<span class="note" style="margin:0">ساعتی تنظیم نشده.</span>`;
 }
 
@@ -868,13 +1268,11 @@ function applyTheme(){
 function renderSettings(){
   $("verLbl").textContent = "نسخه‌ی " + APP_VERSION + " · " + fa(all().length) + " کارت";
   $("themeLbl").textContent = {auto:"خودکار",dark:"تیره",light:"روشن"}[S.set.theme];
-  $("hideKnownSw").setAttribute("aria-checked", S.set.hideKnown);
+  $("newPerDay").textContent = fa(S.set.newPerDay);
   $("mineCountLbl").textContent = fa(S.mine.length) + " کارت";
-  // install
   if (isStandalone()){ $("installLbl").textContent = "نصب شده ✓"; $("installSub").textContent = "اپ روی صفحه‌ی اصلی گوشیه"; }
   else if (installEvt){ $("installLbl").textContent = "نصب"; $("installSub").textContent = "مثل یه اپ معمولی روی صفحه‌ی اصلی"; }
   else { $("installLbl").textContent = "راهنما"; $("installSub").textContent = isIOS ? "از دکمه‌ی Share در Safari" : "از منوی مرورگر"; }
-  // notifications
   const perm = ("Notification" in window) ? Notification.permission : "unsupported";
   $("notifSwitch").setAttribute("aria-checked", S.remind.on && perm === "granted");
   $("notifSub").textContent = perm === "denied" ? "اجازه‌ش در تنظیمات مرورگر بسته‌ست" :
@@ -890,11 +1288,11 @@ async function showInstall(){
   if (installEvt){ installEvt.prompt(); const r = await installEvt.userChoice; installEvt = null; renderSettings(); if (r.outcome === "accepted") toast("نصب شد"); return; }
   const https = location.protocol === "https:";
   openSheet("نصب روی گوشی", `
-    ${!https ? `<div class="warn">این صفحه از روی فایل باز شده. برای نصب، اپ باید از یه آدرس https باز بشه (مثلاً GitHub Pages). فعلاً همه‌چیز کار می‌کنه، فقط نصب و Notification پس‌زمینه نه.</div>` : ""}
+    ${!https ? `<div class="warn">این صفحه از روی فایل باز شده. برای نصب، اپ باید از یه آدرس https باز بشه (مثلاً GitHub Pages).</div>` : ""}
     <h3 style="margin:4px 0 8px;font-size:15px">اندروید (Chrome)</h3>
-    <ol class="steps"><li>منوی سه‌نقطه‌ی بالای Chrome رو بزن.</li><li>«Install app» یا «Add to Home screen» رو انتخاب کن.</li><li>آیکون اپ روی صفحه‌ی اصلی میاد و بدون نوار مرورگر باز می‌شه.</li></ol>
+    <ol class="steps"><li>منوی سه‌نقطه‌ی بالای Chrome رو بزن.</li><li>«Install app» یا «Add to Home screen» رو انتخاب کن.</li></ol>
     <h3 style="margin:16px 0 8px;font-size:15px">آیفون (Safari)</h3>
-    <ol class="steps"><li>دکمه‌ی Share (مربع با فلش رو به بالا) رو بزن.</li><li>«Add to Home Screen» رو انتخاب کن.</li><li>از همون آیکون بازش کن تا Notification هم فعال بشه.</li></ol>
+    <ol class="steps"><li>دکمه‌ی Share رو بزن.</li><li>«Add to Home Screen» رو انتخاب کن.</li></ol>
   `, `<button class="btn primary" id="iOk">فهمیدم</button>`);
   $("iOk").onclick = closeSheet;
 }
@@ -902,7 +1300,11 @@ async function showInstall(){
 /* ---------- wiring ---------- */
 document.querySelectorAll(".tab").forEach(t => t.onclick = () => show(t.dataset.v));
 $("prevBtn").onclick = () => go(-1); $("nextBtn").onclick = () => go(1);
-$("goodBtn").onclick = () => mark("k"); $("againBtn").onclick = () => mark("a");
+$("showBtn").onclick = () => setFlip(true);
+document.querySelectorAll(".rate").forEach(b => b.onclick = () => rate(+b.dataset.r));
+$("undoBtn").onclick = doUndo;
+$("modeToday").onclick = () => setMode("today"); $("modeFree").onclick = () => setMode("free");
+$("editCard").onclick = e => { e.stopPropagation(); const c = deck[S.set.pos]; if (c && c.own) openForm(c); };
 $("chips").onclick = e => { const b = e.target.closest(".chip"); if (!b) return; S.set.filter = b.dataset.f; S.set.pos = 0; refreshStudy(); b.scrollIntoView({inline:"center", block:"nearest", behavior:"smooth"}); };
 $("shuffleBtn").onclick = () => { S.set.shuffle = !S.set.shuffle; S.set.seed = Math.floor(Math.random()*1e9); S.set.pos = 0; $("shuffleBtn").setAttribute("aria-pressed", S.set.shuffle); refreshStudy(); toast(S.set.shuffle ? "ترتیب تصادفی روشن شد" : "ترتیب اصلی"); };
 $("quickAdd").onclick = () => openForm(); $("addBtn").onclick = () => openForm();
@@ -910,14 +1312,21 @@ $("importBtn").onclick = pickXlsx; $("importRow").onclick = pickXlsx; $("exportM
 $("libSearch").oninput = e => { libQ = e.target.value; renderLib(); };
 $("libChips").onclick = e => { const b = e.target.closest(".chip"); if (!b) return; libF = b.dataset.lf; renderLib(); };
 $("libList").onclick = e => { const b = e.target.closest(".item"); if (b) showDetail(b.dataset.id); };
+$("hardList").onclick = e => { const b = e.target.closest(".item"); if (b) showDetail(b.dataset.id); };
+$("states").onclick = e => { const b = e.target.closest(".hrow"); if (!b) return; libF = b.dataset.lf; libQ = ""; $("libSearch").value = ""; show("lib"); };
 $("catPanel").onclick = e => { const b = e.target.closest("[data-cat]"); if (b) catSheet(b.dataset.cat); else if (e.target.closest("#newCatRow")) catSheet(null); };
 $("themeRow").onclick = () => { S.set.theme = {auto:"dark",dark:"light",light:"auto"}[S.set.theme]; save("set"); applyTheme(); renderSettings(); };
-$("hideKnownRow").onclick = () => { S.set.hideKnown = !S.set.hideKnown; save("set"); renderSettings(); };
+$("npdMinus").onclick = () => { S.set.newPerDay = Math.max(0, S.set.newPerDay - 5); save("set"); renderSettings(); };
+$("npdPlus").onclick = () => { S.set.newPerDay = Math.min(200, S.set.newPerDay + 5); save("set"); renderSettings(); };
 $("backupRow").onclick = backup; $("restoreRow").onclick = () => $("jsonFile").click();
-$("resetRow").onclick = async () => { if (await ask("پاک کردن پیشرفت", "همه‌ی علامت‌های «بلد» و «مرور» پاک می‌شن. کارت‌های خودت می‌مونن.", "پاک کن", true)){ S.status = {}; save("status"); renderSettings(); toast("پیشرفت پاک شد"); } };
+$("resetRow").onclick = async () => {
+  if (!await ask("پاک کردن پیشرفت", "زمان‌بندی همه‌ی کارت‌ها و سابقه‌ی گزارش‌ها پاک می‌شه. کارت‌های خودت می‌مونن.", "پاک کن", true)) return;
+  S.srs = {}; S.log = []; S.daily = { day:"", newSeen:0, extraNew:0 }; undo = null;
+  save("srs"); save("log"); save("daily"); renderSettings(); toast("پیشرفت پاک شد");
+};
 $("installRow").onclick = showInstall;
 $("notifRow").onclick = toggleNotif;
-$("addTime").onclick = async () => { const v = $("timeInput").value; if (!v) return; if (!S.remind.times.includes(v)) S.remind.times.push(v); save("remind"); renderTimes(); toast("ساعت " + v + " اضافه شد"); };
+$("addTime").onclick = () => { const v = $("timeInput").value; if (!v) return; if (!S.remind.times.includes(v)) S.remind.times.push(v); save("remind"); renderTimes(); toast("ساعت " + v + " اضافه شد"); };
 $("times").onclick = e => { const b = e.target.closest("[data-rm]"); if (!b) return; S.remind.times = S.remind.times.filter(t => t !== b.dataset.rm); save("remind"); renderTimes(); };
 $("icsRow").onclick = makeIcs;
 $("testNotif").onclick = async () => {
@@ -930,22 +1339,28 @@ document.addEventListener("keydown", e => {
   if (!$("v-study").classList.contains("active") || $("sheet").classList.contains("open") || /input|textarea|select/i.test(e.target.tagName)) return;
   if (e.key===" "||e.key==="Enter"){ e.preventDefault(); setFlip(!flipped); }
   else if (e.key==="ArrowLeft") go(1); else if (e.key==="ArrowRight") go(-1);
-  else if (e.key==="1") mark("a"); else if (e.key==="2") mark("k");
+  else if (flipped && ["1","2","3","4"].includes(e.key)) rate(+e.key);
+  else if (e.key==="z" || e.key==="ز") doUndo();
 });
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible"){ checkDueInApp(); renderStats(); } });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible"){ checkDueInApp(); if ($("v-study").classList.contains("active") && !flipped) refreshStudy(); } });
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; if ($("v-set").classList.contains("active")) renderSettings(); });
 window.addEventListener("appinstalled", () => { installEvt = null; toast("اپ نصب شد"); });
 
 /* ---------- boot ---------- */
 (async () => {
   await KV.init();
-  for (const k of ["status","mine","cats","set","remind"]){
+  for (const k of ["status","srs","log","daily","mine","cats","set","remind"]){
     let v = await KV.get(k);
     if (v === undefined && (k === "status" || k === "set")) v = lsGet(k);
-    if (v !== undefined && v !== null) S[k] = (typeof S[k] === "object" && !Array.isArray(S[k])) ? Object.assign(S[k], v) : v;
+    if (v === undefined || v === null) continue;
+    S[k] = (typeof S[k] === "object" && !Array.isArray(S[k])) ? Object.assign(S[k], v) : v;
   }
-  ["filter","shuffle","hideKnown","theme","seed","pos"].forEach(k => { const v = lsGet(k); if (v !== undefined && S.set[k] === undefined) S.set[k] = v; });
-  if (S.set.filter !== "all" && S.set.filter !== "new" && S.set.filter !== "again" && S.set.filter !== "mine" && !cats().some(c => c.k === S.set.filter)) S.set.filter = "all";
+  if (S.status && Object.keys(S.status).length){
+    const n = migrate(S.status); S.status = {}; save("status"); save("srs");
+    if (n) setTimeout(() => toast(`پیشرفت قبلی ${fa(n)} کارت منتقل شد`), 800);
+  }
+  if (!["today","free"].includes(S.set.mode)) S.set.mode = "today";
+  if (S.set.filter !== "all" && S.set.filter !== "mine" && !cats().some(c => c.k === S.set.filter)) S.set.filter = "all";
   applyTheme();
   $("shuffleBtn").setAttribute("aria-pressed", S.set.shuffle);
   refreshStudy();
@@ -957,6 +1372,7 @@ window.addEventListener("appinstalled", () => { installEvt = null; toast("اپ �
   checkDueInApp();
   if (location.hash === "#add") openForm();
 })();
+
 </script>
 </body>
 </html>
