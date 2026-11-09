@@ -1,5 +1,5 @@
 /* SQL Cards service worker: offline cache + background reminders */
-const VERSION = "sqlcards-v1.0.2";
+const VERSION = "sqlcards-v1.1.0";
 const ASSETS = [
   "./", "./index.html", "./manifest.webmanifest",
   "./vendor/xlsx.full.min.js", "./fonts/Vazirmatn.woff2",
@@ -90,10 +90,13 @@ async function maybeRemind() {
   remind.last = now.getTime();
   await idbSet("remind", remind);
   if (open.some(c => c.visibilityState === "visible")) return;
-  const status = (await idbGet("status")) || {};
-  const again = Object.values(status).filter(v => v === "a").length;
+  // count cards due by the end of the study day (day rolls over at 4 AM)
+  const srs = (await idbGet("srs")) || {};
+  const d = new Date(now.getTime() - 4 * 3600000); d.setHours(0, 0, 0, 0);
+  const eod = d.getTime() + 4 * 3600000 + 86400000;
+  const due = Object.values(srs).filter(s => s && s.due && s.due <= eod).length;
   await self.registration.showNotification("وقت مرور فلش‌کارت‌هاست", {
-    body: again ? `${faNum(again)} کارت برای مرور داری. چند دقیقه وقت بذار.` : "چند دقیقه کارت‌ها رو مرور کن.",
+    body: due ? `${faNum(due)} کارت موعد مرور داره. چند دقیقه وقت بذار.` : "چند کارت جدید منتظرته. چند دقیقه وقت بذار.",
     icon: "icons/icon-192.png", badge: "icons/badge-96.png",
     tag: "sqlcards-remind", renotify: true, lang: "fa", dir: "rtl", data: { url: "./" }
   });
