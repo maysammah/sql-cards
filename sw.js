@@ -1,11 +1,11 @@
-/* SQL Cards service worker: offline cache + background reminders */
-const VERSION = "sqlcards-v1.1.1";
+/* Yadkart service worker: offline cache + background reminders */
+const VERSION = "sqlcards-v2.0.0";
 const ASSETS = [
   "./", "./index.html", "./manifest.webmanifest",
   "./vendor/xlsx.full.min.js", "./fonts/Vazirmatn.woff2",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png",
   "./icons/apple-touch-icon.png", "./icons/badge-96.png",
-  "./template/sql-cards-template.xlsx"
+  "./template/yadkart-template.xlsx"
 ];
 
 self.addEventListener("install", e => {
@@ -95,7 +95,7 @@ async function maybeRemind() {
   const d = new Date(now.getTime() - 4 * 3600000); d.setHours(0, 0, 0, 0);
   const eod = d.getTime() + 4 * 3600000 + 86400000;
   const due = Object.values(srs).filter(s => s && s.due && s.due <= eod).length;
-  await self.registration.showNotification("وقت مرور فلش‌کارت‌هاست", {
+  await self.registration.showNotification("یادکارت: وقت مروره", {
     body: due ? `${faNum(due)} کارت موعد مرور داره. چند دقیقه وقت بذار.` : "چند کارت جدید منتظرته. چند دقیقه وقت بذار.",
     icon: "icons/icon-192.png", badge: "icons/badge-96.png",
     tag: "sqlcards-remind", renotify: true, lang: "fa", dir: "rtl", data: { url: "./" }
